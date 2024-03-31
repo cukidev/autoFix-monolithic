@@ -12,7 +12,6 @@ import lombok.Setter;
 
 /*
   Clase correspondiente al Vehiculo, el cual contiene todos sus datos personales
-  @author Paloma Zepeda Garrido
 */
 
 public class Vehicle {
