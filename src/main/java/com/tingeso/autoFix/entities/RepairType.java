@@ -1,7 +1,5 @@
 package com.tingeso.autoFix.entities;
 
-
-
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
@@ -12,6 +10,7 @@ import lombok.Setter;
 
 
 @Entity
+@Table(name = "repair_types")
 public class RepairType {
 
     @Id

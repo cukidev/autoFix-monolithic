@@ -15,8 +15,12 @@ public class RepairTypeService {
         this.repairTypeRepository = repairTypeRepository;
     }
 
-    public RepairType getRepairTypeByName(String name) {
-        return repairTypeRepository.findByName(name);
+    public RepairType getRepairTypeByType(String type) {
+        return repairTypeRepository.findByType(type);
+    }
+
+    public RepairType saveRepairType(RepairType repairType) {
+        return repairTypeRepository.save(repairType);
     }
 
 }

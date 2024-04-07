@@ -23,12 +23,11 @@ public class RepairController {
             Repair newRepair = repairService.createRepair(repair);
             return ResponseEntity.ok(newRepair);
         } catch (Exception e) {
-            // Manejo de excepciones (SOON)
             return ResponseEntity.badRequest().build();
         }
     }
 
-    @GetMapping("/{id}")
+    @GetMapping("/{idVin}")
     public ResponseEntity<Repair> getRepairById(@PathVariable String idVin) {
         Repair repair = (Repair) repairService.getRepairByIdVin(idVin);
         if (repair != null) {

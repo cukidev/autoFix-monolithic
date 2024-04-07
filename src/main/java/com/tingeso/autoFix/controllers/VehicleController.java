@@ -23,9 +23,9 @@ public class VehicleController {
         return ResponseEntity.ok(savedVehicle);
     }
 
-    @GetMapping // GET - Obtener un vehiculo por su idVin
+    @GetMapping("/{idVin}") // GET - Obtener un vehiculo por su idVin
     public ResponseEntity<Vehicle> getVehicle(@PathVariable String idVin){
-        Vehicle vehicle = (Vehicle) vehicleService.getVehicleByIdVin(idVin);
+        Vehicle vehicle = vehicleService.getVehicleByIdVin(idVin);
         return ResponseEntity.ok(vehicle);
     }
 }

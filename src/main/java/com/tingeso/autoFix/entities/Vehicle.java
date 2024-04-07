@@ -4,12 +4,11 @@ import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
-import lombok.Getter;
-import lombok.Setter;
+import lombok.Data;
 
 @Entity
 @Table(name = "vehicle")
-
+@Data
 /*
   Clase correspondiente al Vehiculo, el cual contiene todos sus datos personales
 */
@@ -21,9 +20,6 @@ public class Vehicle {
     = ATRIBUTOS =
     =============
     */
-
-    @Getter
-    @Setter
 
     @Id
     @Column(name = "id_vin", nullable = false) // Chassis

@@ -20,9 +20,9 @@ public class RepairTypeController {
         this.repairTypeService = repairTypeService;
     }
 
-    @GetMapping("/{name}")
-    public ResponseEntity<RepairType> getRepairTypeByName(@PathVariable String name) {
-        RepairType repairType = repairTypeService.getRepairTypeByName(name);
+    @GetMapping("/{type}")
+    public ResponseEntity<RepairType> getRepairTypeByType(@PathVariable String type) {
+        RepairType repairType = repairTypeService.getRepairTypeByType(type);
         if (repairType != null) {
             return ResponseEntity.ok(repairType);
         } else {

@@ -10,7 +10,6 @@ public class AutoFixApplication {
 		SpringApplication.run(AutoFixApplication.class, args);
 		helloWorld();
 	}
-
 	public static void helloWorld(){
 		System.out.println("Hola mundo esto es una prueba de Tingeso");
 	}
