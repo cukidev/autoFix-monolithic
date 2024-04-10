@@ -1,6 +1,6 @@
 package com.tingeso.autoFix.services;
 
-import com.tingeso.autoFix.entities.RepairType;
+import com.tingeso.autoFix.entities.RepairTypes;
 import com.tingeso.autoFix.repositories.RepairTypeRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -15,12 +15,12 @@ public class RepairTypeService {
         this.repairTypeRepository = repairTypeRepository;
     }
 
-    public RepairType getRepairTypeByType(String type) {
+    public RepairTypes getRepairTypeByType(String type) {
         return repairTypeRepository.findByType(type);
     }
 
-    public RepairType saveRepairType(RepairType repairType) {
-        return repairTypeRepository.save(repairType);
+    public RepairTypes saveRepairType(RepairTypes repairTypes) {
+        return repairTypeRepository.save(repairTypes);
     }
 
 }

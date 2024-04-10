@@ -11,7 +11,7 @@ import lombok.Setter;
 
 @Entity
 @Table(name = "repair_types")
-public class RepairType {
+public class RepairTypes {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

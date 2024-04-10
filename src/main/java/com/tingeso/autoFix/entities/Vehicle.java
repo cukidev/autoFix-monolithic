@@ -1,10 +1,9 @@
 package com.tingeso.autoFix.entities;
 
-import jakarta.persistence.Column;
-import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
-import jakarta.persistence.Table;
+import jakarta.persistence.*;
 import lombok.Data;
+
+import java.util.List;
 
 @Entity
 @Table(name = "vehicle")
@@ -25,7 +24,7 @@ public class Vehicle {
     @Column(name = "id_vin", nullable = false) // Chassis
     private String idVin;
 
-    @Column(name = "license_plate", nullable = false, unique = true) // Patente
+    @Column(name = "license_plate", nullable = false, unique = true)
     private String licensePlate;
 
     @Column(name = "brand", nullable = false) // Marca
@@ -45,5 +44,10 @@ public class Vehicle {
 
     @Column(name = "seats", nullable = false) //Número de asientos
     private Integer seats;
+
+    // RELACIONES
+
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    private List<PricingAdjustment> pricingAdjustment;
 
 }
