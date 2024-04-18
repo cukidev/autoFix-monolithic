@@ -1,18 +1,22 @@
 package com.tingeso.autoFix.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
 @Entity
 @Table(name = "vehicle")
 @Data
+@NoArgsConstructor
+@AllArgsConstructor
 /*
   Clase correspondiente al Vehiculo, el cual contiene todos sus datos personales
 */
 
-public class Vehicle {
+public class VehicleEntity {
 
     /*
     =============
@@ -21,11 +25,11 @@ public class Vehicle {
     */
 
     @Id
-    @Column(name = "id_vin", nullable = false) // Chassis
-    private String idVin;
+    @Column(name = "id_vin",unique = true, nullable = false) // Chassis
+    private String id_vin;
 
     @Column(name = "license_plate", nullable = false, unique = true)
-    private String licensePlate;
+    private String license_plate;
 
     @Column(name = "brand", nullable = false) // Marca
     private String brand;
@@ -34,20 +38,20 @@ public class Vehicle {
     private String model;
 
     @Column(name = "v_type", nullable = false) //Tipo de Vehículo
-    private String vType;
+    private String v_type;
 
     @Column(name = "year_of_manufacture", nullable = false) //Año de fabricación
-    private Integer yearOfManufacture;
+    private Integer year_of_manufacture;
 
     @Column(name = "engine_type", nullable = false) //Tipo de motor
-    private String engineType;
+    private String engine_type;
 
     @Column(name = "seats", nullable = false) //Número de asientos
     private Integer seats;
 
     // RELACIONES
 
-    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL)
+    @OneToMany(mappedBy = "vehicleEntity", cascade = CascadeType.ALL)
     private List<PricingAdjustment> pricingAdjustment;
 
 }

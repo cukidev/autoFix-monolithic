@@ -25,5 +25,5 @@ public class PricingAdjustment {
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id_vin", referencedColumnName = "id_vin", nullable = false)
-    private Vehicle vehicle;
+    private VehicleEntity vehicleEntity;
 }

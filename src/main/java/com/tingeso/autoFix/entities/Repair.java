@@ -17,7 +17,7 @@ public class Repair {
 
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "id_vin", nullable = false)
-    private Vehicle vehicle;
+    private VehicleEntity vehicleEntity;
 
     @Column(name = "entry_date", nullable = false)
     private LocalDateTime entryDate;

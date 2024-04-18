@@ -11,7 +11,7 @@ public class AutoFixApplication {
 		helloWorld();
 	}
 	public static void helloWorld(){
-		System.out.println("Hola mundo esto es una prueba de Tingeso");
+		System.out.println("Autofix está funcionando correctamente.");
 	}
 
 

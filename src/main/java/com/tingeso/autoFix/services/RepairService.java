@@ -4,6 +4,7 @@ import com.tingeso.autoFix.entities.Repair;
 import com.tingeso.autoFix.repositories.RepairRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import java.util.ArrayList;
 
 @Service
 public class RepairService {
@@ -16,11 +17,28 @@ public class RepairService {
     }
 
     public Repair createRepair(Repair repair) {
-        // Se añadirán lógicas de negocios futuramente
         return repairRepository.save(repair);
     }
 
-    public Object getRepairByIdVin(String idVin) {
-        return repairRepository.findById(idVin);
+    public ArrayList<Repair> getAllRepairs() {
+        return (ArrayList<Repair>) repairRepository.findAll();
     }
+
+    public Repair getRepairById(String id) {
+        return repairRepository.findById(id).orElse(null);
+    }
+
+    public Repair updateRepair(Repair repair) {
+        return repairRepository.save(repair);
+    }
+
+    public boolean deleteRepair(String id) {
+        try {
+            repairRepository.deleteById(id);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
 }
