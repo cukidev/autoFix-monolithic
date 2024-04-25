@@ -2,9 +2,10 @@ package com.tingeso.autoFix.services;
 
 import com.tingeso.autoFix.entities.VehicleEntity;
 import com.tingeso.autoFix.repositories.VehicleRepository;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
+import java.util.List;
 
 @Service
 public class VehicleService {
@@ -16,8 +17,8 @@ public class VehicleService {
         this.vehicleRepository = vehicleRepository;
     }
 
-    public ArrayList<VehicleEntity> getVehicles() { // Lista de vehículos
-        return (ArrayList<VehicleEntity>) vehicleRepository.findAll();
+    public List<VehicleEntity> getVehicles() { // Lista de vehículos
+        return vehicleRepository.findAll();
     }
 
     public VehicleEntity createVehicle(VehicleEntity vehicle){
@@ -29,10 +30,13 @@ public class VehicleService {
         return vehicleRepository.findById(id).get();
     }
 
-    public VehicleEntity updateVehicle(VehicleEntity vehicleEntity){
-        return vehicleRepository.save(vehicleEntity);
+    public VehicleEntity updateVehicle(Long id, VehicleEntity vehicleEntity){
+        if(vehicleRepository.existsById(id)) {
+            vehicleEntity.setId(id);
+            return vehicleRepository.save(vehicleEntity);
+        }
+        throw new EntityNotFoundException("El vehículo con el id " + id + " no existe.");
     }
-
     public boolean deleteVehicle(Long id) throws Exception{
         try{
             vehicleRepository.deleteById(id);

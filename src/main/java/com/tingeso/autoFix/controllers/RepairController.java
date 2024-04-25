@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Optional;
+
 @RestController
 @RequestMapping("/repair")
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin("*")
 public class RepairController {
 
     private final RepairService repairService;
@@ -18,17 +20,17 @@ public class RepairController {
         this.repairService = repairService;
     }
 
-    @PostMapping("/")
-    public ResponseEntity<RepairEntity> createRepair(@RequestBody RepairEntity repairEntity) {
-        try {
-            RepairEntity newRepairEntity = repairService.createRepair(repairEntity);
-            return ResponseEntity.ok(newRepairEntity);
-        } catch (Exception e) {
-            return ResponseEntity.badRequest().build();
+    @PostMapping("/repairs")
+    public ResponseEntity<?> createRepair(@RequestBody RepairEntity newRepair, @RequestParam String licensePlate) {
+        Optional<RepairEntity> repairOpt = repairService.createRepair(newRepair, licensePlate);
+        if (!repairOpt.isPresent()) {
+            // Aquí podrías devolver un estado de error personalizado, por ejemplo, 404 Not Found
+            return ResponseEntity.notFound().build();
         }
+        return ResponseEntity.ok(repairOpt.get());
     }
 
-    @GetMapping("/{idVin}")
+    @GetMapping("/{id}")
     public ResponseEntity<RepairEntity> getRepairById(@PathVariable String idVin) {
         RepairEntity repairEntity =  repairService.getRepairById(idVin);
         if (repairEntity != null) {

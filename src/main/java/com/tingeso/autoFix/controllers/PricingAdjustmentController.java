@@ -10,7 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("pricing_adjustment")
-@CrossOrigin("http://localhost:5173")
+@CrossOrigin("*")
 public class PricingAdjustmentController {
 
     private final PricingAdjustmentService pricingAdjustmentService;

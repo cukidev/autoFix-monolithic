@@ -35,9 +35,9 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleEntity);
     }
 
-    @PutMapping("/") // PUT -
-    public ResponseEntity<VehicleEntity> updateVehicle(@RequestBody VehicleEntity vehicle){
-        VehicleEntity vehicleUpdated = vehicleService.updateVehicle(vehicle);
+    @PutMapping("/{id}")
+    public ResponseEntity<VehicleEntity> updateVehicle(@PathVariable Long id, @RequestBody VehicleEntity vehicle){
+        VehicleEntity vehicleUpdated = vehicleService.updateVehicle(id, vehicle);
         return ResponseEntity.ok(vehicleUpdated);
     }
 

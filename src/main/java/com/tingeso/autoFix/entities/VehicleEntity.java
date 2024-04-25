@@ -1,17 +1,17 @@
 package com.tingeso.autoFix.entities;
 
 import jakarta.persistence.*;
-import lombok.AllArgsConstructor;
-import lombok.Data;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import java.util.List;
+
 
 @Entity
 @Table(name = "vehicle")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor
+
 /*
   Clase correspondiente al Vehiculo, el cual contiene todos sus datos personales
 */
@@ -30,7 +30,7 @@ public class VehicleEntity {
     private Long id;
 
     @Column(name = "license_plate", nullable = false, unique = true)
-    private String license_plate;
+    private String licensePlate;
 
     @Column(name = "brand", nullable = false) // Marca
     private String brand;
@@ -49,6 +49,9 @@ public class VehicleEntity {
 
     @Column(name = "seats", nullable = false) //Número de asientos
     private Integer seats;
+
+    @Column(name = "mileage", nullable = false)
+    private Integer mileage;
 
     // RELACIONES
 

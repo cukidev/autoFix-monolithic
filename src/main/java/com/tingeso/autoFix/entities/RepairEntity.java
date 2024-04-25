@@ -16,7 +16,7 @@ public class RepairEntity {
     private Long id;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "id_vin", nullable = false)
+    @JoinColumn(name = "id_veh", nullable = false)
     private VehicleEntity vehicleEntity;
 
     @Column(name = "entry_date", nullable = false)
@@ -31,7 +31,10 @@ public class RepairEntity {
     @Column(name = "total_cost", nullable = false)
     private Double totalCost;
 
-    @Column(name = "departure_date")
+    @Column(name = "departure_date", nullable = false)
     private LocalDateTime departureDate;
+
+    @Column(name = "status", nullable = false)
+    private String status;
 
 }
