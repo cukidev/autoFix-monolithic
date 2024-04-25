@@ -25,8 +25,9 @@ public class VehicleEntity {
     */
 
     @Id
-    @Column(name = "id_vin",unique = true, nullable = false) // Chassis
-    private String id_vin;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id",unique = true, nullable = false) // Chassis
+    private Long id;
 
     @Column(name = "license_plate", nullable = false, unique = true)
     private String license_plate;
@@ -52,6 +53,6 @@ public class VehicleEntity {
     // RELACIONES
 
     @OneToMany(mappedBy = "vehicleEntity", cascade = CascadeType.ALL)
-    private List<PricingAdjustment> pricingAdjustment;
+    private List<PricingAdjustmentEntity> pricingAdjustmentEntity;
 
 }

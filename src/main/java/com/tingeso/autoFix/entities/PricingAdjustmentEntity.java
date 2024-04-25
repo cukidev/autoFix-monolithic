@@ -8,7 +8,7 @@ import java.math.BigDecimal;
 @Entity
 @Table(name = "pricing_adjustment")
 
-public class PricingAdjustment {
+public class PricingAdjustmentEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -24,6 +24,6 @@ public class PricingAdjustment {
     private BigDecimal amount;
 
     @ManyToOne
-    @JoinColumn(name = "vehicle_id_vin", referencedColumnName = "id_vin", nullable = false)
+    @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     private VehicleEntity vehicleEntity;
 }

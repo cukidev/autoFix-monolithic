@@ -1,6 +1,6 @@
 package com.tingeso.autoFix.controllers;
 
-import com.tingeso.autoFix.entities.PricingAdjustment;
+import com.tingeso.autoFix.entities.PricingAdjustmentEntity;
 import com.tingeso.autoFix.services.PricingAdjustmentService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -10,6 +10,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("pricing_adjustment")
+@CrossOrigin("http://localhost:5173")
 public class PricingAdjustmentController {
 
     private final PricingAdjustmentService pricingAdjustmentService;
@@ -20,24 +21,24 @@ public class PricingAdjustmentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<PricingAdjustment>> getAll() {
+    public ResponseEntity<List<PricingAdjustmentEntity>> getAll() {
         return ResponseEntity.ok(pricingAdjustmentService.findAll());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<PricingAdjustment> getById(@PathVariable Long id) {
+    public ResponseEntity<PricingAdjustmentEntity> getById(@PathVariable Long id) {
         return pricingAdjustmentService.findById(id)
                 .map(ResponseEntity::ok)
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @PostMapping
-    public ResponseEntity<PricingAdjustment> create(@RequestBody PricingAdjustment pricingAdjustment) {
-        return ResponseEntity.ok(pricingAdjustmentService.save(pricingAdjustment));
+    public ResponseEntity<PricingAdjustmentEntity> create(@RequestBody PricingAdjustmentEntity pricingAdjustmentEntity) {
+        return ResponseEntity.ok(pricingAdjustmentService.save(pricingAdjustmentEntity));
     }
 
     @PutMapping("/{id}")
-    public ResponseEntity<PricingAdjustment> update(@PathVariable Long id, @RequestBody PricingAdjustment pricingAdjustment) {
+    public ResponseEntity<PricingAdjustmentEntity> update(@PathVariable Long id, @RequestBody PricingAdjustmentEntity pricingAdjustmentEntity) {
         return pricingAdjustmentService.findById(id)
                 .map(existingAdjustment -> {
 

@@ -25,17 +25,17 @@ public class VehicleService {
     }
 
 
-    public VehicleEntity getVehicleByIdVin(String idVin) {
-        return vehicleRepository.findById(idVin).get();
+    public VehicleEntity getVehicleByIdVin(Long id) {
+        return vehicleRepository.findById(id).get();
     }
 
     public VehicleEntity updateVehicle(VehicleEntity vehicleEntity){
         return vehicleRepository.save(vehicleEntity);
     }
 
-    public boolean deleteVehicle(String idVin) throws Exception{
+    public boolean deleteVehicle(Long id) throws Exception{
         try{
-            vehicleRepository.deleteById(idVin);
+            vehicleRepository.deleteById(id);
             return true;
         } catch (Exception e){
             throw new Exception(e.getMessage());

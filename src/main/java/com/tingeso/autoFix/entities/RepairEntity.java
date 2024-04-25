@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Entity
 @Table(name = "repairs")
 @Data
-public class Repair {
+public class RepairEntity {
 
 
     @Id
@@ -21,6 +21,9 @@ public class Repair {
 
     @Column(name = "entry_date", nullable = false)
     private LocalDateTime entryDate;
+
+    @Column(name = "exit_date", nullable = false)
+    private LocalDateTime exitDate;
 
     @Column(name = "repair_type", nullable = false)
     private String repairType;

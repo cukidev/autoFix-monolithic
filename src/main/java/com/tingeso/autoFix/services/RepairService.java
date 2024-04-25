@@ -1,6 +1,6 @@
 package com.tingeso.autoFix.services;
 
-import com.tingeso.autoFix.entities.Repair;
+import com.tingeso.autoFix.entities.RepairEntity;
 import com.tingeso.autoFix.repositories.RepairRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,20 +16,20 @@ public class RepairService {
         this.repairRepository = repairRepository;
     }
 
-    public Repair createRepair(Repair repair) {
-        return repairRepository.save(repair);
+    public RepairEntity createRepair(RepairEntity repairEntity) {
+        return repairRepository.save(repairEntity);
     }
 
-    public ArrayList<Repair> getAllRepairs() {
-        return (ArrayList<Repair>) repairRepository.findAll();
+    public ArrayList<RepairEntity> getAllRepairs() {
+        return (ArrayList<RepairEntity>) repairRepository.findAll();
     }
 
-    public Repair getRepairById(String id) {
+    public RepairEntity getRepairById(String id) {
         return repairRepository.findById(id).orElse(null);
     }
 
-    public Repair updateRepair(Repair repair) {
-        return repairRepository.save(repair);
+    public RepairEntity updateRepair(RepairEntity repairEntity) {
+        return repairRepository.save(repairEntity);
     }
 
     public boolean deleteRepair(String id) {
@@ -40,5 +40,4 @@ public class RepairService {
             return false;
         }
     }
-
 }

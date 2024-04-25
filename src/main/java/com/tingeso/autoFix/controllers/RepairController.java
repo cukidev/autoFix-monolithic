@@ -1,6 +1,6 @@
 package com.tingeso.autoFix.controllers;
 
-import com.tingeso.autoFix.entities.Repair;
+import com.tingeso.autoFix.entities.RepairEntity;
 import com.tingeso.autoFix.services.RepairService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/repair")
+@CrossOrigin("http://localhost:5173")
 public class RepairController {
 
     private final RepairService repairService;
@@ -17,24 +18,30 @@ public class RepairController {
         this.repairService = repairService;
     }
 
-    @PostMapping
-    public ResponseEntity<Repair> createRepair(@RequestBody Repair repair) {
+    @PostMapping("/")
+    public ResponseEntity<RepairEntity> createRepair(@RequestBody RepairEntity repairEntity) {
         try {
-            Repair newRepair = repairService.createRepair(repair);
-            return ResponseEntity.ok(newRepair);
+            RepairEntity newRepairEntity = repairService.createRepair(repairEntity);
+            return ResponseEntity.ok(newRepairEntity);
         } catch (Exception e) {
             return ResponseEntity.badRequest().build();
         }
     }
 
     @GetMapping("/{idVin}")
-    public ResponseEntity<Repair> getRepairById(@PathVariable String idVin) {
-        Repair repair = (Repair) repairService.getRepairByIdVin(idVin);
-        if (repair != null) {
-            return ResponseEntity.ok(repair);
+    public ResponseEntity<RepairEntity> getRepairById(@PathVariable String idVin) {
+        RepairEntity repairEntity =  repairService.getRepairById(idVin);
+        if (repairEntity != null) {
+            return ResponseEntity.ok(repairEntity);
         } else {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @PutMapping("/")
+    public ResponseEntity<RepairEntity> updateRepair(@RequestBody RepairEntity repairEntity){
+        RepairEntity repairEntityUpdated = repairService.updateRepair(repairEntity);
+        return  ResponseEntity.ok(repairEntityUpdated);
     }
 
 

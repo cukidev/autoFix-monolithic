@@ -29,9 +29,9 @@ public class VehicleController {
         return ResponseEntity.ok(savedVehicleEntity);
     }
 
-    @GetMapping("/{idVin}") // GET - Obtener un vehiculo por su idVin
-    public ResponseEntity<VehicleEntity> getVehicle(@PathVariable String idVin){
-        VehicleEntity vehicleEntity = vehicleService.getVehicleByIdVin(idVin);
+    @GetMapping("/{id}") // GET - Obtener un vehiculo por su idVin
+    public ResponseEntity<VehicleEntity> getVehicle(@PathVariable Long id){
+        VehicleEntity vehicleEntity = vehicleService.getVehicleByIdVin(id);
         return ResponseEntity.ok(vehicleEntity);
     }
 
@@ -41,9 +41,9 @@ public class VehicleController {
         return ResponseEntity.ok(vehicleUpdated);
     }
 
-    @DeleteMapping("/{idVin}")
-    public ResponseEntity<VehicleEntity> deleteVehicle(@PathVariable String idVin) throws Exception{
-        var isDeleted = vehicleService.deleteVehicle(idVin);
+    @DeleteMapping("/{id}")
+    public ResponseEntity<VehicleEntity> deleteVehicle(@PathVariable Long id) throws Exception{
+        var isDeleted = vehicleService.deleteVehicle(id);
         return ResponseEntity.noContent().build();
     }
 

@@ -1,16 +1,14 @@
 package com.tingeso.autoFix.controllers;
 
-import com.tingeso.autoFix.entities.RepairTypes;
+import com.tingeso.autoFix.entities.RepairTypeEntity;
 import com.tingeso.autoFix.services.RepairTypeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("repair_types")
+@CrossOrigin("http://localhost:5173")
 public class RepairTypeController {
 
     private final RepairTypeService repairTypeService;
@@ -21,10 +19,10 @@ public class RepairTypeController {
     }
 
     @GetMapping("/{type}")
-    public ResponseEntity<RepairTypes> getRepairTypeByType(@PathVariable String type) {
-        RepairTypes repairTypes = repairTypeService.getRepairTypeByType(type);
-        if (repairTypes != null) {
-            return ResponseEntity.ok(repairTypes);
+    public ResponseEntity<RepairTypeEntity> getRepairTypeByType(@PathVariable String type) {
+        RepairTypeEntity repairTypeEntity = repairTypeService.getRepairTypeByType(type);
+        if (repairTypeEntity != null) {
+            return ResponseEntity.ok(repairTypeEntity);
         } else {
             return ResponseEntity.notFound().build();
         }

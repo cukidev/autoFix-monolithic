@@ -1,17 +1,21 @@
 package com.tingeso.autoFix.entities;
 
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 
 @Getter
 @Setter
 
+@NoArgsConstructor
+@AllArgsConstructor
 
 @Entity
-@Table(name = "repair_types")
-public class RepairTypes {
+@Table(name = "repair_type")
+public class RepairTypeEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -30,6 +34,6 @@ public class RepairTypes {
     private Integer hybrid_price;
 
     @Column(name = "electric_price", nullable = false)
-    private Integer electric_rice;
+    private Integer electric_price;
 
 }

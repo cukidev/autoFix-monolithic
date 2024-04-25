@@ -1,6 +1,6 @@
 package com.tingeso.autoFix.services;
 
-import com.tingeso.autoFix.entities.PricingAdjustment;
+import com.tingeso.autoFix.entities.PricingAdjustmentEntity;
 import com.tingeso.autoFix.repositories.PricingAdjustmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -18,16 +18,16 @@ public class PricingAdjustmentService {
         this.pricingAdjustmentRepository = pricingAdjustmentRepository;
     }
 
-    public List<PricingAdjustment> findAll() {
+    public List<PricingAdjustmentEntity> findAll() {
         return pricingAdjustmentRepository.findAll();
     }
 
-    public Optional<PricingAdjustment> findById(Long id) {
+    public Optional<PricingAdjustmentEntity> findById(Long id) {
         return pricingAdjustmentRepository.findById(String.valueOf(id));
     }
 
-    public PricingAdjustment save(PricingAdjustment pricingAdjustment) {
-        return pricingAdjustmentRepository.save(pricingAdjustment);
+    public PricingAdjustmentEntity save(PricingAdjustmentEntity pricingAdjustmentEntity) {
+        return pricingAdjustmentRepository.save(pricingAdjustmentEntity);
     }
 
     public void delete(Long id) {
