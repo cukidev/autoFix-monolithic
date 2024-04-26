@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @Service
@@ -44,6 +45,9 @@ public class RepairService {
         return Optional.of(savedRepair);
     }
 
+    public List<RepairEntity> findRepairsByLicensePlate(String licensePlate) {
+        return repairRepository.findRepairsByLicensePlate(licensePlate);
+    }
 
     public ArrayList<RepairEntity> getAllRepairs() {
         return (ArrayList<RepairEntity>) repairRepository.findAll();
