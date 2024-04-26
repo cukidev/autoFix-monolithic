@@ -40,10 +40,7 @@ public class PricingAdjustmentController {
     @PutMapping("/{id}")
     public ResponseEntity<PricingAdjustmentEntity> update(@PathVariable Long id, @RequestBody PricingAdjustmentEntity pricingAdjustmentEntity) {
         return pricingAdjustmentService.findById(id)
-                .map(existingAdjustment -> {
-
-                    return ResponseEntity.ok(pricingAdjustmentService.save(existingAdjustment));
-                })
+                .map(existingAdjustment -> ResponseEntity.ok(pricingAdjustmentService.save(existingAdjustment)))
                 .orElseGet(() -> ResponseEntity.notFound().build());
     }
 

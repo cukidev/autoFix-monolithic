@@ -30,14 +30,13 @@ public class RepairService {
     }
 
     public Optional<RepairEntity> createRepair(RepairEntity newRepair, String licensePlate) {
-        // Directamente obtiene un Optional<VehicleEntity>
         Optional<VehicleEntity> vehicleOpt = vehicleRepository.findByLicensePlate(licensePlate);
 
         if (!vehicleOpt.isPresent()) {
             return Optional.empty();
         }
 
-        // Ahora puedes usar get() para obtener el VehicleEntity si está presente
+
         newRepair.setVehicleEntity(vehicleOpt.get());
         newRepair.setEntryDate(LocalDateTime.now());
         RepairEntity savedRepair = repairRepository.save(newRepair);

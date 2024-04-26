@@ -23,10 +23,7 @@ public class RepairController {
     @PostMapping("/")
     public ResponseEntity<RepairEntity> createRepair(@RequestBody RepairEntity newRepair, @RequestParam String licensePlate) {
         Optional<RepairEntity> repairOpt = repairService.createRepair(newRepair, licensePlate);
-        if (!repairOpt.isPresent()) {
-            return ResponseEntity.notFound().build();
-        }
-        return ResponseEntity.ok(repairOpt.get());
+        return repairOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
     }
 
     @GetMapping("/{id}")
