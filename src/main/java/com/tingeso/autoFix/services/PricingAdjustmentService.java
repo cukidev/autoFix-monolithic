@@ -33,5 +33,7 @@ public class PricingAdjustmentService {
     public void delete(Long id) {
         pricingAdjustmentRepository.deleteById(id);
     }
+
+
 }
 

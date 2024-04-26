@@ -6,6 +6,8 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.Set;
+
 
 @Getter
 @Setter
@@ -14,8 +16,8 @@ import lombok.Setter;
 @AllArgsConstructor
 
 @Entity
-@Table(name = "repair_type")
-public class RepairTypeEntity {
+@Table(name = "repair_prices")
+public class RepairPricesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,5 +37,8 @@ public class RepairTypeEntity {
 
     @Column(name = "electric_price", nullable = false)
     private Integer electric_price;
+
+    @ManyToMany(mappedBy = "repairPrices")
+    private Set<RepairEntity> repairs;
 
 }

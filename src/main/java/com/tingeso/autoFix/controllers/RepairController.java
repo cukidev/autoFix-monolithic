@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.Optional;
 
 @RestController
-@RequestMapping("/repair")
+@RequestMapping("/api/v1/repair")
 @CrossOrigin("*")
 public class RepairController {
 
@@ -20,19 +20,18 @@ public class RepairController {
         this.repairService = repairService;
     }
 
-    @PostMapping("/repairs")
-    public ResponseEntity<?> createRepair(@RequestBody RepairEntity newRepair, @RequestParam String licensePlate) {
+    @PostMapping("/")
+    public ResponseEntity<RepairEntity> createRepair(@RequestBody RepairEntity newRepair, @RequestParam String licensePlate) {
         Optional<RepairEntity> repairOpt = repairService.createRepair(newRepair, licensePlate);
         if (!repairOpt.isPresent()) {
-            // Aquí podrías devolver un estado de error personalizado, por ejemplo, 404 Not Found
             return ResponseEntity.notFound().build();
         }
         return ResponseEntity.ok(repairOpt.get());
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<RepairEntity> getRepairById(@PathVariable String idVin) {
-        RepairEntity repairEntity =  repairService.getRepairById(idVin);
+    public ResponseEntity<RepairEntity> getRepairById(@PathVariable String id) {
+        RepairEntity repairEntity =  repairService.getRepairById(id);
         if (repairEntity != null) {
             return ResponseEntity.ok(repairEntity);
         } else {

@@ -58,4 +58,7 @@ public class VehicleEntity {
     @OneToMany(mappedBy = "vehicleEntity", cascade = CascadeType.ALL)
     private List<PricingAdjustmentEntity> pricingAdjustmentEntity;
 
+    @OneToMany(mappedBy = "vehicleEntity", cascade = CascadeType.ALL)
+    private List<RepairEntity> repair;
+
 }

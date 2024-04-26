@@ -1,7 +1,9 @@
 package com.tingeso.autoFix.services;
 
 import com.tingeso.autoFix.entities.RepairEntity;
+import com.tingeso.autoFix.entities.RepairPricesEntity;
 import com.tingeso.autoFix.entities.VehicleEntity;
+import com.tingeso.autoFix.repositories.RepairPricesRepository;
 import com.tingeso.autoFix.repositories.RepairRepository;
 import com.tingeso.autoFix.repositories.VehicleRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +18,15 @@ public class RepairService {
 
     private final RepairRepository repairRepository;
     private final VehicleRepository vehicleRepository;
+    private final RepairPricesRepository repairPricesRepository;
 
     @Autowired
-    public RepairService(RepairRepository repairRepository, VehicleRepository vehicleRepository){
+    public RepairService(RepairRepository repairRepository,
+                         VehicleRepository vehicleRepository,
+                         RepairPricesRepository repairPricesRepository) {
         this.repairRepository = repairRepository;
         this.vehicleRepository = vehicleRepository;
+        this.repairPricesRepository = repairPricesRepository;
     }
 
     public Optional<RepairEntity> createRepair(RepairEntity newRepair, String licensePlate) {
@@ -45,7 +51,7 @@ public class RepairService {
     }
 
     public RepairEntity getRepairById(String id) {
-        return repairRepository.findById(id).orElse(null);
+        return (RepairEntity) repairRepository.findById(Long.valueOf(id)).orElse(null);
     }
 
     public RepairEntity updateRepair(RepairEntity repairEntity) {
@@ -54,10 +60,39 @@ public class RepairService {
 
     public boolean deleteRepair(String id) {
         try {
-            repairRepository.deleteById(id);
+            repairRepository.deleteById(Long.valueOf(id));
             return true;
         } catch (Exception e) {
             return false;
         }
     }
+
+    public Optional<RepairEntity> addRepairTypeToRepair(Long repairId, Long repairPricesId) {
+        Optional<RepairEntity> repairOpt = repairRepository.findById(repairId);
+        Optional<RepairPricesEntity> repairPricesOpt = repairPricesRepository.findById(String.valueOf(repairPricesId));
+        if (repairOpt.isPresent() && repairPricesOpt.isPresent()) {
+            RepairEntity repair = repairOpt.get();
+            RepairPricesEntity repairPrices = repairPricesOpt.get();
+            repair.getRepairPrices().add(repairPrices); // Agrega el tipo de precio a la reparación
+            repairRepository.save(repair); // Guarda la reparación con la nueva relación
+            return Optional.of(repair);
+        }
+        return Optional.empty();
+    }
+
+    public Optional<RepairEntity> removeRepairTypeFromRepair(Long repairId, Long repairPricesId) {
+        Optional<RepairEntity> repairOpt = repairRepository.findById(repairId);
+        Optional<RepairPricesEntity> repairPricesOpt = repairPricesRepository.findById(String.valueOf(repairPricesId));
+        if (repairOpt.isPresent() && repairPricesOpt.isPresent()) {
+            RepairEntity repair = repairOpt.get();
+            RepairPricesEntity repairPrices = repairPricesOpt.get();
+            repair.getRepairPrices().remove(repairPrices);
+            repairRepository.save(repair);
+            return Optional.of(repair);
+        }
+        return Optional.empty();
+    }
+
+
+
 }

@@ -26,4 +26,13 @@ public class PricingAdjustmentEntity {
     @ManyToOne
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     private VehicleEntity vehicleEntity;
+
+    public void setAmount(Double amount) {
+        this.amount = BigDecimal.valueOf(amount);
+    }
+
+
+    public BigDecimal getAmount() {
+        return amount;
+    }
 }
