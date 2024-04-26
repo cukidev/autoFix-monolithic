@@ -4,7 +4,8 @@ package com.tingeso.autoFix.entities;
 import jakarta.persistence.*;
 import lombok.Data;
 
-import java.math.BigDecimal;
+import java.util.Date;
+
 @Data
 @Entity
 @Table(name = "pricing_adjustment")
@@ -22,18 +23,21 @@ public class PricingAdjustmentEntity {
     private String description;
 
     @Column(name = "amount", nullable = false, precision = 10, scale = 2)
-    private BigDecimal amount;
+    private Integer amount;
+
+    @Column(name = "active_date")
+    private Date activeDate;
+
 
     @ManyToOne
     @JoinColumn(name = "vehicle_id", referencedColumnName = "id", nullable = false)
     private VehicleEntity vehicleEntity;
 
-    public void setAmount(Double amount) {
-        this.amount = BigDecimal.valueOf(amount);
+    public void setAmount(int amount) {
+        this.amount = amount;
     }
 
-
-    public BigDecimal getAmount() {
+    public int getAmount() {
         return amount;
     }
 }

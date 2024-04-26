@@ -1,51 +1,49 @@
 package com.tingeso.autoFix.services;
 
+import com.tingeso.autoFix.entities.PricingAdjustmentEntity;
 import com.tingeso.autoFix.entities.RepairEntity;
-import com.tingeso.autoFix.entities.VehicleEntity;
+import com.tingeso.autoFix.repositories.PricingAdjustmentRepository;
+import com.tingeso.autoFix.repositories.RepairRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @Service
 public class RecargosService {
 
-    public double calculateTotalCost(List<RepairEntity> repairs, VehicleEntity vehicle, int dayOfWeek) {
-        double totalCost = 0.0;
-        double discount = 0.0;
-        double surcharge = 0.0;
 
-        // Se calcula el costo base de las reparaciones
-        for (RepairEntity repair : repairs) { // Changed from Repair to RepairEntity
+    @Autowired
+    private PricingAdjustmentRepository pricingAdjustmentRepository;
+    @Autowired
+    private RepairRepository repairRepository;
+
+    public int calculateTotalCost(String licensePlate) {
+
+        List<RepairEntity> repairs = repairRepository.findByVehicleEntity_LicensePlate(licensePlate);
+        if (repairs.isEmpty()) {
+            return 0;
+        }
+
+        int totalCost =  0;
+        for (RepairEntity repair : repairs) {
             totalCost += repair.getTotalCost();
         }
 
-        // Descuentos y recargos según el tipo de vehículo
-        switch (vehicle.getV_type()) {
-            case "Moto":
-                if (vehicle.getYear_of_manufacture() < 1999) {
-                    discount = 0.10; // 10% descuento para motos antiguas
-                }
-                break;
-            case "Automovil":
-                if (vehicle.getYear_of_manufacture() > 2020) {
-                    surcharge = 0.15; // 15% recargo para autos nuevos
-                }
-                break;
-            case "Camion":
-                surcharge = 0.20;
-                break;
-            default:
-                break;
+        List<PricingAdjustmentEntity> adjustments = pricingAdjustmentRepository.findByVehicleEntity_LicensePlate(licensePlate);
+        for (PricingAdjustmentEntity adjustment : adjustments) {
+            BigDecimal cost = BigDecimal.valueOf(totalCost);
+            BigDecimal percentage = BigDecimal.valueOf(adjustment.getAmount()).divide(BigDecimal.valueOf(100));
+            if (adjustment.getType().equals("Discount")) {
+                totalCost = cost.subtract(cost.multiply(percentage)).intValue();
+            } else if (adjustment.getType().equals("Surcharge")) {
+                totalCost = cost.add(cost.multiply(percentage)).intValue();
+            }
         }
-
-        // Descuentos adicionales según el día de la semana
-        if (dayOfWeek == 3 || dayOfWeek == 5) {
-            discount += 0.05;
-        }
-
-        // Aplicar descuentos y recargos
-        totalCost = totalCost - (totalCost * discount) + (totalCost * surcharge);
 
         return totalCost;
     }
 }
+
+

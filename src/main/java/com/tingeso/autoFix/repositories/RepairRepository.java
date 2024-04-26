@@ -18,4 +18,5 @@ public interface RepairRepository extends JpaRepository<RepairEntity, Long> {
     @Query("SELECT r FROM RepairEntity r WHERE r.vehicleEntity.licensePlate = :licensePlate")
     List<RepairEntity> findRepairsByLicensePlate(@Param("licensePlate") String licensePlate);
 
+    List<RepairEntity> findByVehicleEntity_LicensePlate(String licensePlate);
 }

@@ -1,7 +1,6 @@
 package com.tingeso.autoFix.services;
 
 import com.tingeso.autoFix.entities.PricingAdjustmentEntity;
-import com.tingeso.autoFix.entities.RepairEntity;
 import com.tingeso.autoFix.entities.VehicleEntity;
 import com.tingeso.autoFix.repositories.PricingAdjustmentRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -45,21 +44,25 @@ public class PricingAdjustmentService {
         pricingAdjustmentRepository.deleteById(id);
     }
 
+
     public Boolean calcularAjustesDePrecios(int diaDeLaSemana) {
         List<VehicleEntity> vehiculos = vehicleService.getVehicles();
 
         for (VehicleEntity vehiculo : vehiculos) {
-            List<RepairEntity> reparaciones = repairService.findRepairsByLicensePlate(vehiculo.getLicensePlate());
-            double costoTotal = recargosService.calculateTotalCost(reparaciones, vehiculo, diaDeLaSemana);
+
+            int costoTotal = recargosService.calculateTotalCost(vehiculo.getLicensePlate());
 
             PricingAdjustmentEntity ajuste = new PricingAdjustmentEntity();
             ajuste.setVehicleEntity(vehiculo);
-            ajuste.setType("ADICIONAL"); // o "DESCUENTO", según corresponda
-            ajuste.setDescription("Descripción del ajuste"); // Puedes personalizar esta descripción
+            ajuste.setType("ADICIONAL");
+            ajuste.setDescription("Descripción del ajuste");
             ajuste.setAmount(costoTotal);
             pricingAdjustmentRepository.save(ajuste);
         }
 
         return true;
     }
+
+
+
 }

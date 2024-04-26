@@ -39,27 +39,14 @@ public class RepairEntity {
 
     @ManyToMany
     @JoinTable(
-            name = "repair_to_repair_prices", // Tabla intermedia para la relación muchos a muchos
-            joinColumns = @JoinColumn(name = "repair_id"), // Clave foránea de esta entidad en la tabla intermedia
-            inverseJoinColumns = @JoinColumn(name = "repair_prices_id") // Clave foránea de la entidad RepairPricesEntity en la tabla intermedia
+            name = "repair_to_repair_prices",
+            joinColumns = @JoinColumn(name = "repair_id"),
+            inverseJoinColumns = @JoinColumn(name = "repair_prices_id")
     )
     private Set<RepairPricesEntity> repairPrices = new HashSet<>();
 
     private BigDecimal basePrice;
     private BigDecimal adjustedPrice;
-
-    public void applyAdjustment(PricingAdjustmentEntity adjustment) {
-        if (this.basePrice != null && adjustment != null && adjustment.getAmount() != null) {
-            this.adjustedPrice = this.basePrice.add(adjustment.getAmount());
-        }
-    }
-
-    public void removeAdjustment(PricingAdjustmentEntity adjustment) {
-        if (this.adjustedPrice != null && adjustment != null && adjustment.getAmount() != null) {
-            this.adjustedPrice = this.adjustedPrice.subtract(adjustment.getAmount());
-        }
-    }
-
 
 
 }
