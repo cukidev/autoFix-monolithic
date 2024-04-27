@@ -14,17 +14,14 @@ public class PricingAdjustmentService {
 
     private final PricingAdjustmentRepository pricingAdjustmentRepository;
     private final VehicleService vehicleService;
-    private final RepairService repairService;
     private final RecargosService recargosService;
 
     @Autowired
     public PricingAdjustmentService(PricingAdjustmentRepository pricingAdjustmentRepository,
                                     VehicleService vehicleService,
-                                    RepairService repairService,
                                     RecargosService recargosService) {
         this.pricingAdjustmentRepository = pricingAdjustmentRepository;
         this.vehicleService = vehicleService;
-        this.repairService = repairService;
         this.recargosService = recargosService;
     }
 
@@ -33,7 +30,7 @@ public class PricingAdjustmentService {
     }
 
     public Optional<PricingAdjustmentEntity> findById(Long id) {
-        return pricingAdjustmentRepository.findById(String.valueOf(id));
+        return pricingAdjustmentRepository.findById(id);
     }
 
     public PricingAdjustmentEntity save(PricingAdjustmentEntity pricingAdjustmentEntity) {

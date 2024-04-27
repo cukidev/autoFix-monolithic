@@ -6,41 +6,60 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.Optional;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/v1/repair")
 @CrossOrigin("*")
 public class RepairController {
 
-    private final RepairService repairService;
-
     @Autowired
-    public RepairController(RepairService repairService) {
-        this.repairService = repairService;
+    private RepairService repairService;
+
+    // Obtener todas las reparaciones
+    @GetMapping("/")
+    public ResponseEntity<List<RepairEntity>> getAllRepairs() {
+        List<RepairEntity> repairs = repairService.getAllRepairs();
+        return ResponseEntity.ok(repairs);
     }
 
+    // Crear una nueva reparación
     @PostMapping("/")
-    public ResponseEntity<RepairEntity> createRepair(@RequestBody RepairEntity newRepair, @RequestParam String licensePlate) {
-        Optional<RepairEntity> repairOpt = repairService.createRepair(newRepair, licensePlate);
-        return repairOpt.map(ResponseEntity::ok).orElseGet(() -> ResponseEntity.notFound().build());
+    public ResponseEntity<RepairEntity> createRepair(@RequestBody RepairEntity newRepair) {
+        RepairEntity repair = repairService.createRepair(newRepair);
+        return ResponseEntity.ok(repair);
     }
 
+    // Obtener una reparación por ID
     @GetMapping("/{id}")
-    public ResponseEntity<RepairEntity> getRepairById(@PathVariable String id) {
-        RepairEntity repairEntity =  repairService.getRepairById(id);
-        if (repairEntity != null) {
-            return ResponseEntity.ok(repairEntity);
+    public ResponseEntity<RepairEntity> getRepairById(@PathVariable Long id) {
+        RepairEntity repair = repairService.getRepairById(id);
+        if (repair != null) {
+            return ResponseEntity.ok(repair);
         } else {
             return ResponseEntity.notFound().build();
         }
     }
 
-    @PutMapping("/")
-    public ResponseEntity<RepairEntity> updateRepair(@RequestBody RepairEntity repairEntity){
-        RepairEntity repairEntityUpdated = repairService.updateRepair(repairEntity);
-        return  ResponseEntity.ok(repairEntityUpdated);
+    // Actualizar una reparación
+    @PutMapping("/{id}")
+    public ResponseEntity<RepairEntity> updateRepair(@PathVariable Long id, @RequestBody RepairEntity repairDetails) {
+        RepairEntity updatedRepair = repairService.updateRepair(id, repairDetails);
+        if (updatedRepair != null) {
+            return ResponseEntity.ok(updatedRepair);
+        } else {
+            return ResponseEntity.notFound().build();
+        }
     }
 
-
+    // Eliminar una reparación
+    @DeleteMapping("/{id}")
+    public ResponseEntity<Void> deleteRepair(@PathVariable Long id) {
+        boolean isDeleted = repairService.deleteRepair(id);
+        if (isDeleted) {
+            return ResponseEntity.noContent().build();
+        } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
 }
