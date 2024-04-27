@@ -21,16 +21,16 @@ public class RepairEntity {
     @Column(name = "entry_date", nullable = false)
     private LocalDateTime entryDate;
 
-    @Column(name = "exit_date", nullable = false)
+    @Column(name = "exit_date")
     private LocalDateTime exitDate;
 
-    @Column(name = "total_cost", nullable = false)
+    @Column(name = "total_cost")
     private Double totalCost;
 
-    @Column(name = "departure_date", nullable = false)
+    @Column(name = "departure_date")
     private LocalDateTime departureDate;
 
-    @Column(name = "status", nullable = false)
+    @Column(name = "status")
     private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
