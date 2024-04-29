@@ -13,8 +13,11 @@ import java.util.List;
 @CrossOrigin("*")
 public class RepairController {
 
+    private final RepairService repairService;
     @Autowired
-    private RepairService repairService;
+    public RepairController(RepairService repairService) {
+        this.repairService = repairService;
+    }
 
     // Obtener todas las reparaciones
     @GetMapping("/")

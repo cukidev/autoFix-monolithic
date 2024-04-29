@@ -67,13 +67,20 @@ public class VehicleControllerTest {
                 .andExpect(jsonPath("$[1].brand", is("Honda")));
     }
 
-    // Pruba para crear vehículo
-
+    /// Prueba para crear Vehículo
     @Test
     public void createVehicle_ShouldReturnSavedVehicle() throws Exception {
-        VehicleEntity savedVehicle = new VehicleEntity(1L, "ZZZ999", "Nissan", "Sentra", "Car", 2021, "Gasoline", 5, 5000, null, null);
+        VehicleEntity newVehicle = new VehicleEntity();
+        newVehicle.setLicensePlate("ZZZ999");
+        newVehicle.setBrand("Nissan");
+        newVehicle.setModel("Sentra");
+        newVehicle.setV_type("Car");
+        newVehicle.setYear_of_manufacture(2021);
+        newVehicle.setEngine_type("Gasoline");
+        newVehicle.setSeats(5);
+        newVehicle.setMileage(5000);
 
-        given(vehicleService.createVehicle(any(VehicleEntity.class))).willReturn(savedVehicle);
+        given(vehicleService.createVehicle(any(VehicleEntity.class))).willReturn(newVehicle);
 
         String vehicleJson = """
         {
@@ -96,18 +103,23 @@ public class VehicleControllerTest {
                 .andExpect(jsonPath("$.brand", is("Nissan")));
     }
 
+    // Prueba para actualizar Vehículo
     @Test
     public void updateVehicle_ShouldReturnUpdatedVehicle() throws Exception {
-        // Objeto VehicleEntity con los datos actualizados
-        VehicleEntity updatedVehicle = new VehicleEntity(1L, "ZZZ999", "Nissan", "Sentra", "Car", 2021, "Gasoline", 5, 12000, null, null);
+        VehicleEntity vehicleToUpdate = new VehicleEntity();
+        vehicleToUpdate.setLicensePlate("ZZZ999");
+        vehicleToUpdate.setBrand("Nissan");
+        vehicleToUpdate.setModel("Sentra");
+        vehicleToUpdate.setV_type("Car");
+        vehicleToUpdate.setYear_of_manufacture(2021);
+        vehicleToUpdate.setEngine_type("Gasoline");
+        vehicleToUpdate.setSeats(5);
+        vehicleToUpdate.setMileage(12000);
 
-        // Simulación del servicio para devolver el vehículo actualizado
-        given(vehicleService.updateVehicle(eq(1L), any(VehicleEntity.class))).willReturn(updatedVehicle);
+        given(vehicleService.updateVehicle(eq(1L), any(VehicleEntity.class))).willReturn(vehicleToUpdate);
 
-        // JSON que representa los datos actualizados del vehículo
         String vehicleJson = """
         {
-            "id": 1,
             "licensePlate": "ZZZ999",
             "brand": "Nissan",
             "model": "Sentra",
@@ -119,13 +131,12 @@ public class VehicleControllerTest {
         }
         """;
 
-        // Ejecución de la prueba para el endpoint de actualización de vehículos
         mockMvc.perform(put("/api/v1/vehicle/{id}", 1L)
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(vehicleJson))
                 .andExpect(status().isOk())
                 .andExpect(jsonPath("$.licensePlate", is("ZZZ999")))
-                .andExpect(jsonPath("$.mileage", is(12000)));  // Verificando que el kilometraje se actualizó correctamente
+                .andExpect(jsonPath("$.mileage", is(12000)));
     }
 
     @Test

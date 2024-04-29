@@ -1,7 +1,10 @@
 package com.tingeso.autoFix.entities;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import jakarta.persistence.*;
-import lombok.*;
+import lombok.AllArgsConstructor;
+import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.util.List;
 
@@ -26,7 +29,7 @@ public class VehicleEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "id",unique = true, nullable = false) // Chassis
+    @Column(name = "id_vehicle",unique = true, nullable = false) // Chassis
     private Long id;
 
     @Column(name = "license_plate", nullable = false, unique = true)
@@ -55,10 +58,8 @@ public class VehicleEntity {
 
     // RELACIONES
 
-    @OneToMany(mappedBy = "vehicleEntity", cascade = CascadeType.ALL)
-    private List<PricingAdjustmentEntity> pricingAdjustmentEntity;
-
-    @OneToMany(mappedBy = "vehicleEntity", cascade = CascadeType.ALL)
-    private List<RepairEntity> repair;
+    @OneToMany(mappedBy = "vehicle", cascade = CascadeType.ALL, fetch = FetchType.LAZY)
+    @JsonManagedReference
+    private List<RepairEntity> repairs;
 
 }

@@ -1,52 +1,54 @@
 package com.tingeso.autoFix.entities;
 
+import com.fasterxml.jackson.annotation.JsonBackReference;
 import jakarta.persistence.*;
+import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import java.math.BigDecimal;
+import java.time.LocalDate;
 import java.time.LocalDateTime;
-import java.util.HashSet;
-import java.util.Set;
+import java.time.LocalTime;
 
 @Entity
-@Data
 @Table(name = "repair")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RepairEntity {
 
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_repair",unique = true, nullable = false) // Chassis
     private Long id;
 
     @Column(name = "entry_date", nullable = false)
-    private LocalDateTime entryDate;
+    private LocalDate entryDate;
+
+    @Column(name = "entry_time", nullable = false)
+    private LocalTime entryTime;
 
     @Column(name = "exit_date")
     private LocalDateTime exitDate;
 
-    @Column(name = "total_cost")
-    private Double totalCost;
+    @Column(name = "customer_pickup_date") // era más facil manejar esta variable
+    private LocalDate customerPickupDate;
 
-    @Column(name = "departure_date")
-    private LocalDateTime departureDate;
+    @Column(name = "repair_cost", nullable = false)
+    private BigDecimal repairCost;
 
     @Column(name = "status")
     private String status;
 
     @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "license_plate", referencedColumnName = "license_plate", nullable = false)
-    private VehicleEntity vehicleEntity;
+    @JoinColumn(name = "vehicle_id")
+    @JsonBackReference
+    private VehicleEntity vehicle;
 
-    @ManyToMany
-    @JoinTable(
-            name = "repair_to_repair_prices",
-            joinColumns = @JoinColumn(name = "repair_id"),
-            inverseJoinColumns = @JoinColumn(name = "repair_prices_id")
-    )
-    private Set<RepairPricesEntity> repairPrices = new HashSet<>();
 
     private BigDecimal basePrice;
     private BigDecimal adjustedPrice;
-
 
 }

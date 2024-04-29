@@ -2,26 +2,20 @@ package com.tingeso.autoFix.entities;
 
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-import java.util.Set;
-
-
-@Getter
-@Setter
-
-@NoArgsConstructor
-@AllArgsConstructor
 
 @Entity
 @Table(name = "repair_prices")
+@Data
+@NoArgsConstructor
+@AllArgsConstructor
 public class RepairPricesEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    private Long id_repair_prices;
 
     @Column(name = "type", nullable = false, unique = true)
     private String type;
@@ -37,8 +31,5 @@ public class RepairPricesEntity {
 
     @Column(name = "electric_price", nullable = false)
     private Integer electric_price;
-
-    @ManyToMany(mappedBy = "repairPrices")
-    private Set<RepairEntity> repairs;
 
 }

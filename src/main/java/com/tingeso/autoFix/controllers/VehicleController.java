@@ -14,8 +14,11 @@ import java.util.List;
 
 public class VehicleController {
 
+    private final VehicleService vehicleService;
     @Autowired
-    VehicleService vehicleService;
+    public VehicleController(VehicleService vehicleService) {
+        this.vehicleService = vehicleService;
+    }
 
     @GetMapping("/") // Obtener listado de todos los vehiculos
     public ResponseEntity<List<VehicleEntity>> listVehicle(){

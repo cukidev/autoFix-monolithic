@@ -1,13 +1,13 @@
 package com.tingeso.autoFix.controllers;
 
-import com.tingeso.autoFix.entities.RepairPricesEntity;
 import com.tingeso.autoFix.services.RepairPricesService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.CrossOrigin;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("repair_types")
+@RequestMapping("repair_prices")
 @CrossOrigin("*")
 public class RepairPricesController {
 
@@ -18,14 +18,5 @@ public class RepairPricesController {
         this.repairPricesService = repairPricesService;
     }
 
-    @GetMapping("/{type}")
-    public ResponseEntity<RepairPricesEntity> getRepairTypeByType(@PathVariable String type) {
-        RepairPricesEntity repairPricesEntity = repairPricesService.getRepairTypeByType(type);
-        if (repairPricesEntity != null) {
-            return ResponseEntity.ok(repairPricesEntity);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 
 }
