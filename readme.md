@@ -13,8 +13,8 @@ En el siguiente proyecto se realizará una aplicación monolítica en Java basad
 
 
 AutoFix es una una cadena de talleres especializados en el mantenimiento y reparación de vehículos, dentro de la siguiente aplicación web, las principales funcionalidades serán las siguientes:
-* Registro de Vehículos.
-* Registro de Reparaciones.
+* ✅ Registro de Vehículos. 
+* ✅ Registro de Reparaciones.
 * Cálculo de Costo total de la reparación.
 * Listado donde se muestren los valores involucrados en el cálculo de la fórmula.
 * Listado de los 11 tipos de reparaciones.

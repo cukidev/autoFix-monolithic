@@ -9,7 +9,6 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.util.List;
-import java.util.Optional;
 
 @Service
 public class BonusService {
@@ -52,24 +51,26 @@ public class BonusService {
     }
 
     public BonusEntity applyBonusToVehicle(Long vehicleId, String brand) {
-        Optional<VehicleEntity> vehicleOptional = vehicleRepository.findById(vehicleId);
+        VehicleEntity vehicle = vehicleRepository.findById(vehicleId)
+                .orElseThrow(() -> new RuntimeException("No se encontró vehículo " + vehicleId));
 
-        VehicleEntity vehicle = vehicleOptional.get();
-        Optional<BonusEntity> existingBonus = bonusRepository.findByVehicle_Id(vehicleId);
+        bonusRepository.findByVehicle_Id(vehicleId)
+                .ifPresent(bonus -> {
+                    throw new RuntimeException("Bono ya asignado");
+                });
 
-        Optional<BonusEntity> availableBonus = bonusRepository.findFirstByBrandAndVehicleIsNull(brand);
-
-        BonusEntity bonus = availableBonus.get();
-        bonus.setVehicle(vehicle);
-        return bonusRepository.save(bonus);
+        return bonusRepository.findFirstByBrandAndVehicleIsNull(brand)
+                .map(bonus -> {
+                    bonus.setVehicle(vehicle);
+                    return bonusRepository.save(bonus);
+                })
+                .orElseThrow(() -> new RuntimeException("Bono no disponible " + brand));
     }
+
     public BigDecimal calculateBonusForVehicle(Long vehicleId) {
-        Optional<BonusEntity> bonus = bonusRepository.findByVehicle_Id(vehicleId);
-        if (bonus.isPresent()) {
-            return bonus.get().getAmount();
-        } else {
-            return BigDecimal.ZERO;
-        }
+        return bonusRepository.findByVehicle_Id(vehicleId)
+                .map(BonusEntity::getAmount)
+                .orElse(BigDecimal.ZERO);
     }
 
 }

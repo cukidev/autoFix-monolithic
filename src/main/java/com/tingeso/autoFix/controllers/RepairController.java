@@ -1,11 +1,14 @@
 package com.tingeso.autoFix.controllers;
 
 import com.tingeso.autoFix.entities.RepairEntity;
+import com.tingeso.autoFix.services.RepairCostService;
 import com.tingeso.autoFix.services.RepairService;
+import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.math.BigDecimal;
 import java.util.List;
 
 @RestController
@@ -14,9 +17,12 @@ import java.util.List;
 public class RepairController {
 
     private final RepairService repairService;
+    private final RepairCostService repairCostService;
+
     @Autowired
-    public RepairController(RepairService repairService) {
+    public RepairController(RepairService repairService, RepairCostService repairCostService) {
         this.repairService = repairService;
+        this.repairCostService = repairCostService;
     }
 
     // Obtener todas las reparaciones
@@ -62,6 +68,17 @@ public class RepairController {
         if (isDeleted) {
             return ResponseEntity.noContent().build();
         } else {
+            return ResponseEntity.notFound().build();
+        }
+    }
+
+    // Fórmula de cálculo de costo total de reparación
+    @GetMapping("/cost/{vehicleId}")
+    public ResponseEntity<BigDecimal> getRepairCost(@PathVariable Long vehicleId) {
+        try {
+            BigDecimal totalCost = repairCostService.calculateTotalRepairCost(vehicleId);
+            return ResponseEntity.ok(totalCost);
+        } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
     }
