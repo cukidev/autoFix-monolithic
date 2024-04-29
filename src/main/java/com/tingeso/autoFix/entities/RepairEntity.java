@@ -33,8 +33,14 @@ public class RepairEntity {
     @Column(name = "exit_date")
     private LocalDateTime exitDate;
 
-    @Column(name = "customer_pickup_date") // era más facil manejar esta variable
-    private LocalDate customerPickupDate;
+    @Column(name = "exit_time")
+    private LocalDateTime exitTime;
+
+    @Column(name = "pickup_date") // era más facil manejar esta variable
+    private LocalDate pickupDate;
+
+    @Column(name = "pickup_time") // era más facil manejar esta variable
+    private LocalTime pickupTime;
 
     @Column(name = "repair_cost", nullable = false)
     private BigDecimal repairCost;
@@ -46,7 +52,6 @@ public class RepairEntity {
     @JoinColumn(name = "vehicle_id")
     @JsonBackReference
     private VehicleEntity vehicle;
-
 
     private BigDecimal basePrice;
     private BigDecimal adjustedPrice;
