@@ -5,6 +5,7 @@ import com.tingeso.autoFix.services.RepairCostService;
 import com.tingeso.autoFix.services.RepairService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -34,9 +35,15 @@ public class RepairController {
 
     // Crear una nueva reparación
     @PostMapping("/")
-    public ResponseEntity<RepairEntity> createRepair(@RequestBody RepairEntity repairEntity) {
-        RepairEntity savedRepairEntity = repairService.createRepair(repairEntity);
-        return ResponseEntity.ok(savedRepairEntity);
+    public ResponseEntity<RepairEntity> createRepair(@RequestParam Long vehicleId, @RequestParam Long repairPriceId) {
+        try {
+            RepairEntity newRepair = repairService.saveRepair(vehicleId, repairPriceId);
+            return ResponseEntity.ok(newRepair);
+        } catch (EntityNotFoundException e) {
+            return ResponseEntity.notFound().build();
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(null);
+        }
     }
 
     // Obtener una reparación por ID

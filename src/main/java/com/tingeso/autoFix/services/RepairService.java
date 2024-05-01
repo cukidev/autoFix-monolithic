@@ -1,8 +1,13 @@
 package com.tingeso.autoFix.services;
 
 import com.tingeso.autoFix.entities.RepairEntity;
+import com.tingeso.autoFix.entities.RepairPricesEntity;
+import com.tingeso.autoFix.entities.VehicleEntity;
+import com.tingeso.autoFix.repositories.RepairPricesRepository;
 import com.tingeso.autoFix.repositories.RepairRepository;
+import com.tingeso.autoFix.repositories.VehicleRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
@@ -14,8 +19,12 @@ import java.util.stream.Collectors;
 @Service
 public class RepairService {
 
-    final
-    RepairRepository repairRepository;
+    @Autowired
+    private RepairRepository repairRepository;
+    @Autowired
+    private VehicleRepository vehicleRepository;
+    @Autowired
+    private RepairPricesRepository repairPriceRepository;
 
     public RepairService(RepairRepository repairRepository) {
         this.repairRepository = repairRepository;
@@ -41,6 +50,25 @@ public class RepairService {
             return repairRepository.save(repairEntity);
         }
         throw new EntityNotFoundException("La reparación con el id " + id + " no existe.");
+    }
+
+    public RepairEntity saveRepair(Long vehicleId, Long repairPriceId) {
+        // Buscar el vehículo y el precio de reparación usando los ID proporcionados
+        VehicleEntity vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
+        RepairPricesEntity repairPrice = repairPriceRepository.findById(String.valueOf(repairPriceId)).orElseThrow(() -> new EntityNotFoundException("RepairPrice not found"));
+
+        // Crear un nuevo objeto RepairEntity
+        RepairEntity repair = new RepairEntity();
+        repair.setVehicle(vehicle);
+        repair.setRepairPrice(repairPrice);
+
+        // Calcular el costo basado en el tipo de motor del vehículo
+        String engineType = vehicle.getEngine_type();
+        Integer cost = repairPrice.getPriceByEngineType(engineType);
+        repair.setRepairCost(BigDecimal.valueOf(cost));
+
+        // Guardar la entidad RepairEntity en la base de datos
+        return repairRepository.save(repair);
     }
 
 

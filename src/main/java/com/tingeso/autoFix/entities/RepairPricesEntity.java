@@ -32,4 +32,15 @@ public class RepairPricesEntity {
     @Column(name = "electric_price", nullable = false)
     private Integer electric_price;
 
+
+    public Integer getPriceByEngineType(String engineType) {
+        switch (engineType) {
+            case "Gasolina": return gasoline_price;
+            case "Diésel": return diesel_price;
+            case "Híbrido": return hybrid_price;
+            case "Eléctrico": return electric_price;
+            default: return 0;
+        }
+    }
+
 }

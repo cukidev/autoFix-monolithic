@@ -4,6 +4,10 @@ import com.tingeso.autoFix.entities.RepairPricesEntity;
 import com.tingeso.autoFix.repositories.RepairPricesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
+
+import java.util.List;
+import java.util.Optional;
 
 @Service
 public class RepairPricesService {
@@ -15,12 +19,31 @@ public class RepairPricesService {
         this.repairPricesRepository = repairPricesRepository;
     }
 
+    public List<RepairPricesEntity> findAllRepairPrices() {
+        return repairPricesRepository.findAll();
+    }
+
+    public Optional<RepairPricesEntity> findRepairPriceById(Long repairPriceId) {
+        return repairPricesRepository.findById(String.valueOf(repairPriceId));
+    }
+
     public RepairPricesEntity getRepairTypeByType(String type) {
         return repairPricesRepository.findByType(type);
     }
 
-    public RepairPricesEntity saveRepairType(RepairPricesEntity repairPricesEntity) {
+    public RepairPricesEntity createOrUpdateRepairPrices(RepairPricesEntity repairPricesEntity) {
         return repairPricesRepository.save(repairPricesEntity);
     }
+
+    @Transactional
+    public void deleteRepairPrice(Long repairTypeId) throws Exception {
+        long repairsCount = repairPricesRepository.countByRepairPricesId(repairTypeId);
+        if (repairsCount > 0) {
+            throw new Exception("Existen reparaciones asociadas a este tipo de reparación y no puede ser eliminado.");
+        }
+        repairPricesRepository.deleteById(String.valueOf(repairTypeId));
+    }
+
+
 
 }

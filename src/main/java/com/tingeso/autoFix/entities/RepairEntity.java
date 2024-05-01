@@ -53,6 +53,10 @@ public class RepairEntity {
     @JsonBackReference
     private VehicleEntity vehicle;
 
+    @ManyToOne
+    @JoinColumn(name = "repair_price_id")
+    private RepairPricesEntity repairPrice;
+
     private BigDecimal basePrice;
     private BigDecimal adjustedPrice;
 
