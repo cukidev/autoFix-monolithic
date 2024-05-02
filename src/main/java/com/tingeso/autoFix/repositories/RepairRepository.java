@@ -26,10 +26,9 @@ public interface RepairRepository extends JpaRepository<RepairEntity, Long> {
     List<Object[]> findRepairTypesAndEngineTypesWithCountsAndTotalCost();
 
     @Query("SELECT new com.tingeso.autoFix.dto.RepairDetailsDTO(r.id, v.licensePlate, rp.type, r.entryDate, r.repairCost, r.status) " +
-            "FROM RepairEntity r " +
-            "JOIN r.vehicle v " +
-            "JOIN r.repairPrice rp")
+            "FROM RepairEntity r JOIN r.vehicle v JOIN r.repairPrice rp")
     List<RepairDetailsDTO> findAllRepairsWithDetails();
+
 
 
 }

@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 
 import java.math.BigDecimal;
 import java.time.LocalDate;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -121,4 +122,83 @@ public class RepairService {
     public List<RepairDetailsDTO> findAllRepairsWithDetails() {
         return repairRepository.findAllRepairsWithDetails();
     }
+
+    public BigDecimal getRepairCostByType(int repairType, String engineType) {
+        Map<Integer, Map<String, BigDecimal>> repairCosts = new HashMap<>();
+
+        repairCosts.put(1, Map.of(
+                "Gasolina", new BigDecimal("120000"),
+                "Diésel", new BigDecimal("120000"),
+                "Híbrido", new BigDecimal("180000"),
+                "Eléctrico", new BigDecimal("220000")
+        ));
+        repairCosts.put(2, Map.of(
+                "Gasolina", new BigDecimal("130000"),
+                "Diésel", new BigDecimal("130000"),
+                "Híbrido", new BigDecimal("190000"),
+                "Eléctrico", new BigDecimal("230000")
+        ));
+        repairCosts.put(3, Map.of(
+                "Gasolina", new BigDecimal("350000"),
+                "Diésel", new BigDecimal("450000"),
+                "Híbrido", new BigDecimal("700000"),
+                "Eléctrico", new BigDecimal("800000")
+        ));
+        repairCosts.put(4, Map.of(
+                "Gasolina", new BigDecimal("210000"),
+                "Diésel", new BigDecimal("210000"),
+                "Híbrido", new BigDecimal("300000"),
+                "Eléctrico", new BigDecimal("300000")
+        ));
+        repairCosts.put(5, Map.of(
+                "Gasolina", new BigDecimal("150000"),
+                "Diésel", new BigDecimal("150000"),
+                "Híbrido", new BigDecimal("200000"),
+                "Eléctrico", new BigDecimal("250000")
+        ));
+        repairCosts.put(6, Map.of(
+                "Gasolina", new BigDecimal("100000"),
+                "Diésel", new BigDecimal("120000"),
+                "Híbrido", new BigDecimal("450000"),
+                "Eléctrico", BigDecimal.ZERO
+        ));
+        repairCosts.put(7, Map.of(
+                "Gasolina", new BigDecimal("100000"),
+                "Diésel", new BigDecimal("100000"),
+                "Híbrido", new BigDecimal("100000"),
+                "Eléctrico", new BigDecimal("100000")
+        ));
+        repairCosts.put(8, Map.of(
+                "Gasolina", new BigDecimal("180000"),
+                "Diésel", new BigDecimal("180000"),
+                "Híbrido", new BigDecimal("210000"),
+                "Eléctrico", new BigDecimal("250000")
+        ));
+        repairCosts.put(9, Map.of(
+                "Gasolina", new BigDecimal("150000"),
+                "Diésel", new BigDecimal("150000"),
+                "Híbrido", new BigDecimal("180000"),
+                "Eléctrico", new BigDecimal("180000")
+        ));
+        repairCosts.put(10, Map.of(
+                "Gasolina", new BigDecimal("130000"),
+                "Diésel", new BigDecimal("140000"),
+                "Híbrido", new BigDecimal("220000"),
+                "Eléctrico", BigDecimal.ZERO
+        ));
+        repairCosts.put(11, Map.of(
+                "Gasolina", new BigDecimal("80000"),
+                "Diésel", new BigDecimal("80000"),
+                "Híbrido", new BigDecimal("80000"),
+                "Eléctrico", new BigDecimal("80000")
+        ));
+
+        Map<String, BigDecimal> repairCostMap = repairCosts.get(repairType);
+        if (repairCostMap != null) {
+            return repairCostMap.getOrDefault(engineType, BigDecimal.ZERO);
+        }
+        return BigDecimal.ZERO;
+    }
+
+
 }

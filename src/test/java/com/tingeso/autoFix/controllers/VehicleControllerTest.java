@@ -11,13 +11,15 @@ import org.springframework.test.web.servlet.MockMvc;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.Optional;
+
 
 import static org.hamcrest.Matchers.hasSize;
 import static org.hamcrest.Matchers.is;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.BDDMockito.given;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
@@ -71,7 +73,7 @@ public class VehicleControllerTest {
     @Test
     public void createVehicle_ShouldReturnSavedVehicle() throws Exception {
         VehicleEntity newVehicle = new VehicleEntity();
-        newVehicle.setLicensePlate("ZZZ999");
+        newVehicle.setLicensePlate("ZZTT99");
         newVehicle.setBrand("Nissan");
         newVehicle.setModel("Sentra");
         newVehicle.setV_type("Car");
@@ -84,7 +86,7 @@ public class VehicleControllerTest {
 
         String vehicleJson = """
         {
-            "licensePlate": "ZZZ999",
+            "licensePlate": "ZZTT99",
             "brand": "Nissan",
             "model": "Sentra",
             "v_type": "Car",
@@ -99,7 +101,7 @@ public class VehicleControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(vehicleJson))
                 .andExpect(status().isOk())
-                .andExpect(jsonPath("$.licensePlate", is("ZZZ999")))
+                .andExpect(jsonPath("$.licensePlate", is("ZZTT99")))
                 .andExpect(jsonPath("$.brand", is("Nissan")));
     }
 
@@ -107,7 +109,7 @@ public class VehicleControllerTest {
     @Test
     public void updateVehicle_ShouldReturnUpdatedVehicle() throws Exception {
         VehicleEntity vehicleToUpdate = new VehicleEntity();
-        vehicleToUpdate.setLicensePlate("ZZZ999");
+        vehicleToUpdate.setLicensePlate("ZZTT99");
         vehicleToUpdate.setBrand("Nissan");
         vehicleToUpdate.setModel("Sentra");
         vehicleToUpdate.setV_type("Car");
@@ -120,7 +122,7 @@ public class VehicleControllerTest {
 
         String vehicleJson = """
         {
-            "licensePlate": "ZZZ999",
+            "licensePlate": "ZZTT99",
             "brand": "Nissan",
             "model": "Sentra",
             "v_type": "Car",
@@ -146,4 +148,98 @@ public class VehicleControllerTest {
         mockMvc.perform(delete("/api/v1/vehicle/{id}",1L))
                 .andExpect(status().isNoContent());
     }
+
+    // Prueba para obtener un vehículo por ID que existe
+    @Test
+    public void getVehicleById_ShouldReturnVehicle() throws Exception {
+        VehicleEntity vehicle = new VehicleEntity();
+        vehicle.setId(1L);
+        vehicle.setLicensePlate("CCAA77");
+        vehicle.setBrand("Ford");
+        vehicle.setModel("Focus");
+        vehicle.setV_type("Car");
+        vehicle.setYear_of_manufacture(2018);
+        vehicle.setEngine_type("Hybrid");
+        vehicle.setSeats(5);
+        vehicle.setMileage(30000);
+
+        // Usando doReturn en lugar de willReturn
+        doReturn(Optional.of(vehicle)).when(vehicleService).getVehicleByIdVin(1L);
+
+        mockMvc.perform(get("/api/v1/vehicle/{id}", 1L))
+                .andExpect(status().isOk())
+                .andExpect(jsonPath("$.licensePlate", is("CCAA77")))
+                .andExpect(jsonPath("$.brand", is("Ford")));
+    }
+
+
+    // Prueba para verificar el manejo de datos incorrectos en la creación de vehículos
+    @Test
+    public void createVehicle_WhenDataIsInvalid_ShouldReturnBadRequest() throws Exception {
+        String vehicleJson = """
+        {
+            "licensePlate": "INVALID",
+            "brand": "",
+            "model": "Accord",
+            "v_type": "Car",
+            "year_of_manufacture": 2022,
+            "engine_type": "Gasoline",
+            "seats": 5,
+            "mileage": 100
+        }
+        """;
+
+        mockMvc.perform(post("/api/v1/vehicle/")
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(vehicleJson))
+                .andExpect(status().isBadRequest());
+
+        verify(vehicleService, never()).createVehicle(any(VehicleEntity.class));
+    }
+
+    // Prueba para actualizar un vehículo que no existe
+    @Test
+    public void updateVehicle_WhenVehicleDoesNotExist_ShouldReturnNotFound() throws Exception {
+        VehicleEntity vehicleToUpdate = new VehicleEntity();
+        vehicleToUpdate.setId(1L);
+        vehicleToUpdate.setLicensePlate("CCGG77");
+        vehicleToUpdate.setBrand("Ford");
+        vehicleToUpdate.setModel("Focus");
+        vehicleToUpdate.setV_type("Car");
+        vehicleToUpdate.setYear_of_manufacture(2018);
+        vehicleToUpdate.setEngine_type("Hybrid");
+        vehicleToUpdate.setSeats(5);
+        vehicleToUpdate.setMileage(32000);
+
+        // Usando doReturn para manejar el Optional.empty
+        doReturn(Optional.empty()).when(vehicleService).updateVehicle(eq(1L), any(VehicleEntity.class));
+
+        String vehicleJson = """
+    {
+        "licensePlate": "CCGG77",
+        "brand": "Ford",
+        "model": "Focus",
+        "v_type": "Car",
+        "year_of_manufacture": 2018,
+        "engine_type": "Hybrid",
+        "seats": 5,
+        "mileage": 32000
+    }
+    """;
+
+        mockMvc.perform(put("/api/v1/vehicle/{id}", 1L)
+                        .contentType(MediaType.APPLICATION_JSON)
+                        .content(vehicleJson))
+                .andExpect(status().isNotFound());
+    }
+
+    // Prueba para borrar un vehículo que no existe
+    @Test
+    public void deleteVehicle_WhenVehicleDoesNotExist_ShouldReturnNotFound() throws Exception {
+        given(vehicleService.deleteVehicle(1L)).willReturn(false);
+
+        mockMvc.perform(delete("/api/v1/vehicle/{id}", 1L))
+                .andExpect(status().isNotFound());
+    }
 }
+
