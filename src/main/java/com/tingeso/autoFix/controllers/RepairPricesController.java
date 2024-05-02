@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("repair_prices")
+@RequestMapping("/api/v1/repair/prices")
 @CrossOrigin("*")
 public class RepairPricesController {
 
@@ -21,7 +21,7 @@ public class RepairPricesController {
         this.repairPricesService = repairPricesService;
     }
 
-    @PostMapping
+    @PostMapping("/")
     public ResponseEntity<RepairPricesEntity> createRepairPrices(@RequestBody RepairPricesEntity repairPrices) {
         try {
             RepairPricesEntity savedRepairPrice = repairPricesService.createOrUpdateRepairPrices(repairPrices);
@@ -31,7 +31,7 @@ public class RepairPricesController {
         }
     }
 
-    @GetMapping
+    @GetMapping("/")
     public ResponseEntity<List<RepairPricesEntity>> getAllRepairPrices() {
         List<RepairPricesEntity> repairPrices = repairPricesService.findAllRepairPrices();
         return repairPrices.isEmpty() ? ResponseEntity.noContent().build() : ResponseEntity.ok(repairPrices);

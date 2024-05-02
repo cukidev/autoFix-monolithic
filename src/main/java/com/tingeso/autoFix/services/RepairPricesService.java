@@ -3,9 +3,11 @@ package com.tingeso.autoFix.services;
 import com.tingeso.autoFix.entities.RepairPricesEntity;
 import com.tingeso.autoFix.repositories.RepairPricesRepository;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.crossstore.ChangeSetPersister;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.math.BigDecimal;
 import java.util.List;
 import java.util.Optional;
 
@@ -33,6 +35,15 @@ public class RepairPricesService {
 
     public RepairPricesEntity createOrUpdateRepairPrices(RepairPricesEntity repairPricesEntity) {
         return repairPricesRepository.save(repairPricesEntity);
+    }
+
+    public BigDecimal getPriceByRepairType(String repairType, String engineType) throws ChangeSetPersister.NotFoundException {
+        RepairPricesEntity repairPricesEntity = repairPricesRepository.findByType(repairType);
+        if (repairPricesEntity != null) {
+            return BigDecimal.valueOf(repairPricesEntity.getPriceByEngineType(engineType));
+        } else {
+            throw new ChangeSetPersister.NotFoundException();
+        }
     }
 
     @Transactional

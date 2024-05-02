@@ -2,6 +2,7 @@ package com.tingeso.autoFix.controllers;
 
 import com.tingeso.autoFix.entities.RepairEntity;
 import com.tingeso.autoFix.services.RepairCostService;
+import com.tingeso.autoFix.services.RepairPricesService;
 import com.tingeso.autoFix.services.RepairService;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,11 +20,13 @@ public class RepairController {
 
     private final RepairService repairService;
     private final RepairCostService repairCostService;
+    private final RepairPricesService repairPricesService;
 
     @Autowired
-    public RepairController(RepairService repairService, RepairCostService repairCostService) {
+    public RepairController(RepairService repairService, RepairCostService repairCostService, RepairPricesService repairPricesService) {
         this.repairService = repairService;
         this.repairCostService = repairCostService;
+        this.repairPricesService = repairPricesService;
     }
 
     // Obtener todas las reparaciones
@@ -35,9 +38,10 @@ public class RepairController {
 
     // Crear una nueva reparación
     @PostMapping("/")
-    public ResponseEntity<RepairEntity> createRepair(@RequestParam Long vehicleId, @RequestParam Long repairPriceId) {
+    public ResponseEntity<RepairEntity> createRepair(@RequestParam Long vehicleId, @RequestParam Long repairPriceId, @RequestParam String engineType) {
         try {
-            RepairEntity newRepair = repairService.saveRepair(vehicleId, repairPriceId);
+            BigDecimal repairPrice = repairPricesService.getPriceByRepairType(String.valueOf(repairPriceId), engineType);
+            RepairEntity newRepair = repairService.saveRepair(vehicleId, repairPriceId, repairPrice);
             return ResponseEntity.ok(newRepair);
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
@@ -89,4 +93,6 @@ public class RepairController {
             return ResponseEntity.notFound().build();
         }
     }
+
+
 }

@@ -52,22 +52,18 @@ public class RepairService {
         throw new EntityNotFoundException("La reparación con el id " + id + " no existe.");
     }
 
-    public RepairEntity saveRepair(Long vehicleId, Long repairPriceId) {
-        // Buscar el vehículo y el precio de reparación usando los ID proporcionados
+    public RepairEntity saveRepair(Long vehicleId, Long repairPriceId, BigDecimal repairPrice) {
         VehicleEntity vehicle = vehicleRepository.findById(vehicleId).orElseThrow(() -> new EntityNotFoundException("Vehicle not found"));
-        RepairPricesEntity repairPrice = repairPriceRepository.findById(String.valueOf(repairPriceId)).orElseThrow(() -> new EntityNotFoundException("RepairPrice not found"));
+        RepairPricesEntity repairPriceEntity = repairPriceRepository.findById(String.valueOf(repairPriceId)).orElseThrow(() -> new EntityNotFoundException("RepairPrice not found"));
 
-        // Crear un nuevo objeto RepairEntity
         RepairEntity repair = new RepairEntity();
         repair.setVehicle(vehicle);
-        repair.setRepairPrice(repairPrice);
+        repair.setRepairPrice(repairPriceEntity);
 
-        // Calcular el costo basado en el tipo de motor del vehículo
         String engineType = vehicle.getEngine_type();
-        Integer cost = repairPrice.getPriceByEngineType(engineType);
+        Integer cost = repairPriceEntity.getPriceByEngineType(engineType);
         repair.setRepairCost(BigDecimal.valueOf(cost));
 
-        // Guardar la entidad RepairEntity en la base de datos
         return repairRepository.save(repair);
     }
 

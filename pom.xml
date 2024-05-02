@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.tingeso</groupId>
-	<artifactId>tingeso1</artifactId>
+	<artifactId>autoFix</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>autoFix</name>
 	<description>SpringBoot proyect for Tingeso</description>
@@ -49,14 +49,14 @@
 		<dependency>
 			<groupId>org.jetbrains</groupId>
 			<artifactId>annotations</artifactId>
-			<version>RELEASE</version>
+			<version>22.0.0</version>
 			<scope>compile</scope>
 		</dependency>
 
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
-			<version>RELEASE</version>
+			<version>4.13.2</version>
 			<scope>test</scope>
 		</dependency>
 
