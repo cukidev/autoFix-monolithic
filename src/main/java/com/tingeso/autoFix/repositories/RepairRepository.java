@@ -1,6 +1,7 @@
 package com.tingeso.autoFix.repositories;
 
 import com.tingeso.autoFix.dto.RepairCalculationDetailsDTO;
+import com.tingeso.autoFix.dto.RepairDetailsDTO;
 import com.tingeso.autoFix.entities.RepairEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -24,11 +25,11 @@ public interface RepairRepository extends JpaRepository<RepairEntity, Long> {
     @Query("SELECT rp.type, v.engine_type, COUNT(v), SUM(r.repairCost) FROM RepairEntity r JOIN r.vehicle v JOIN r.repairPrice rp GROUP BY rp.type, v.engine_type ORDER BY SUM(r.repairCost) DESC")
     List<Object[]> findRepairTypesAndEngineTypesWithCountsAndTotalCost();
 
-
-
-
-
-
+    @Query("SELECT new com.tingeso.autoFix.dto.RepairDetailsDTO(r.id, v.licensePlate, rp.type, r.entryDate, r.repairCost, r.status) " +
+            "FROM RepairEntity r " +
+            "JOIN r.vehicle v " +
+            "JOIN r.repairPrice rp")
+    List<RepairDetailsDTO> findAllRepairsWithDetails();
 
 
 }

@@ -1,5 +1,6 @@
 package com.tingeso.autoFix.services;
 
+import com.tingeso.autoFix.dto.RepairDetailsDTO;
 import com.tingeso.autoFix.entities.RepairEntity;
 import com.tingeso.autoFix.entities.RepairPricesEntity;
 import com.tingeso.autoFix.entities.VehicleEntity;
@@ -115,5 +116,9 @@ public class RepairService {
         }
 
         return discountRate;
+    }
+
+    public List<RepairDetailsDTO> findAllRepairsWithDetails() {
+        return repairRepository.findAllRepairsWithDetails();
     }
 }

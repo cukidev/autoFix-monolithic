@@ -1,5 +1,6 @@
 package com.tingeso.autoFix.controllers;
 
+import com.tingeso.autoFix.dto.RepairDetailsDTO;
 import com.tingeso.autoFix.entities.RepairEntity;
 import com.tingeso.autoFix.services.RepairCostService;
 import com.tingeso.autoFix.services.RepairPricesService;
@@ -92,6 +93,11 @@ public class RepairController {
         } catch (EntityNotFoundException e) {
             return ResponseEntity.notFound().build();
         }
+    }
+
+    @GetMapping("/details")
+    public List<RepairDetailsDTO> getAllRepairsDetails() {
+        return repairService.findAllRepairsWithDetails();
     }
 
 
